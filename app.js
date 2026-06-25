@@ -1,4 +1,4 @@
-﻿const loginForm = document.querySelector("#loginForm");
+const loginForm = document.querySelector("#loginForm");
 const registerForm = document.querySelector("#registerForm");
 const profileView = document.querySelector("#profileView");
 const authTitle = document.querySelector("#authTitle");
@@ -15,6 +15,7 @@ const profileEmail = document.querySelector("#profileEmail");
 const profileGender = document.querySelector("#profileGender");
 const profileBirthday = document.querySelector("#profileBirthday");
 const profileHobbies = document.querySelector("#profileHobbies");
+const toastContainer = document.querySelector("#toastContainer");
 
 const USERS_KEY = "training_users";
 const CURRENT_USER_KEY = "training_current_user";
@@ -37,6 +38,25 @@ function clearMessage() {
   setMessage("");
 }
 
+function showToast(title, description) {
+  const toast = document.createElement("div");
+  const content = document.createElement("div");
+  const titleElement = document.createElement("strong");
+  const descriptionElement = document.createElement("span");
+
+  toast.className = "toast";
+  toast.setAttribute("role", "status");
+  titleElement.textContent = title;
+  descriptionElement.textContent = description;
+  content.append(titleElement, descriptionElement);
+  toast.append(content);
+  toastContainer.append(toast);
+
+  window.setTimeout(() => {
+    toast.classList.add("is-leaving");
+    toast.addEventListener("animationend", () => toast.remove(), { once: true });
+  }, 3200);
+}
 function getInitial(name) {
   return name.trim().charAt(0).toUpperCase() || "T";
 }
@@ -247,6 +267,7 @@ loginForm.addEventListener("submit", (event) => {
 
   localStorage.setItem(CURRENT_USER_KEY, user.email);
   showProfileView(user);
+  showToast("Đăng nhập thành công", `Chào mừng ${user.fullName} quay lại.`);
 });
 
 registerForm.addEventListener("submit", (event) => {
@@ -280,6 +301,7 @@ registerForm.addEventListener("submit", (event) => {
   localStorage.setItem(CURRENT_USER_KEY, newUser.email);
   registerForm.reset();
   showProfileView(newUser);
+  showToast("Đăng ký thành công", "Profile của bạn đã được tạo.");
 });
 
 logoutButton.addEventListener("click", () => {
@@ -287,6 +309,7 @@ logoutButton.addEventListener("click", () => {
   loginForm.reset();
   showLoginView();
   setMessage("Bạn đã đăng xuất.");
+  showToast("Đã đăng xuất", "Bạn có thể đăng nhập lại bất cứ lúc nào.");
 });
 
 const currentUser = getCurrentUser();
