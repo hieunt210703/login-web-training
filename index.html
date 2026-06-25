@@ -1,22 +1,31 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="vi">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Đăng nhập</title>
+    <title>Tài khoản cá nhân</title>
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
     <main class="page">
-      <section class="login-panel" aria-labelledby="login-title">
-        <div class="brand-mark" aria-hidden="true">T</div>
-        <h1 id="login-title">Đăng nhập</h1>
-        <p class="subtitle">Vui lòng nhập email và mật khẩu để tiếp tục.</p>
+      <section class="auth-panel" id="authPanel" aria-labelledby="authTitle">
+        <div class="panel-header">
+          <div>
+            <div class="brand-mark" aria-hidden="true">T</div>
+            <h1 id="authTitle">Đăng nhập</h1>
+            <p class="subtitle" id="authSubtitle">
+              Vui lòng nhập email và mật khẩu để tiếp tục.
+            </p>
+          </div>
+          <button class="profile-icon hidden" id="profileIcon" type="button" aria-label="Profile">
+            <span id="profileInitial">T</span>
+          </button>
+        </div>
 
-        <form class="login-form" id="loginForm">
-          <label for="email">Email</label>
+        <form class="auth-form" id="loginForm">
+          <label for="loginEmail">Email</label>
           <input
-            id="email"
+            id="loginEmail"
             name="email"
             type="email"
             autocomplete="email"
@@ -24,9 +33,9 @@
             required
           />
 
-          <label for="password">Mật khẩu</label>
+          <label for="loginPassword">Mật khẩu</label>
           <input
-            id="password"
+            id="loginPassword"
             name="password"
             type="password"
             autocomplete="current-password"
@@ -36,8 +45,96 @@
           />
 
           <button type="submit">Đăng nhập</button>
-          <p class="message" id="message" role="status" aria-live="polite"></p>
+          <button class="link-button" id="showRegister" type="button">
+            Tạo tài khoản mới
+          </button>
         </form>
+
+        <form class="auth-form hidden" id="registerForm">
+          <label for="fullName">Họ và tên</label>
+          <input
+            id="fullName"
+            name="fullName"
+            type="text"
+            autocomplete="name"
+            placeholder="Nguyễn Văn A"
+            required
+          />
+
+          <label for="gender">Giới tính</label>
+          <select id="gender" name="gender" required>
+            <option value="">Chọn giới tính</option>
+            <option value="Nam">Nam</option>
+            <option value="Nữ">Nữ</option>
+            <option value="Khác">Khác</option>
+          </select>
+
+          <label for="birthday">Ngày sinh</label>
+          <input id="birthday" name="birthday" type="date" required />
+
+          <label for="registerEmail">Email</label>
+          <input
+            id="registerEmail"
+            name="email"
+            type="email"
+            autocomplete="email"
+            placeholder="you@example.com"
+            required
+          />
+
+          <label for="registerPassword">Mật khẩu</label>
+          <input
+            id="registerPassword"
+            name="password"
+            type="password"
+            autocomplete="new-password"
+            placeholder="Tối thiểu 6 ký tự"
+            minlength="6"
+            required
+          />
+
+          <label for="hobbies">Sở thích <span class="optional">(Optional)</span></label>
+          <textarea
+            id="hobbies"
+            name="hobbies"
+            rows="3"
+            placeholder="Ví dụ: đọc sách, bóng đá, du lịch"
+          ></textarea>
+
+          <button type="submit">Đăng ký</button>
+          <button class="link-button" id="showLogin" type="button">
+            Đã có tài khoản
+          </button>
+        </form>
+
+        <section class="profile-view hidden" id="profileView" aria-label="Thông tin profile">
+          <div class="profile-card">
+            <div class="avatar" id="profileAvatar">T</div>
+            <div>
+              <h2 id="profileName">Tên người dùng</h2>
+              <p id="profileEmail">email@example.com</p>
+            </div>
+          </div>
+
+          <dl class="profile-details">
+            <div>
+              <dt>Giới tính</dt>
+              <dd id="profileGender"></dd>
+            </div>
+            <div>
+              <dt>Ngày sinh</dt>
+              <dd id="profileBirthday"></dd>
+            </div>
+            <div>
+              <dt>Sở thích</dt>
+              <dd id="profileHobbies"></dd>
+            </div>
+          </dl>
+
+          <button class="logout-button" id="logoutButton" type="button">Đăng xuất</button>
+        </section>
+
+        <p class="message" id="message" role="status" aria-live="polite"></p>
       </section>
     </main>
 
