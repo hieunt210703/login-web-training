@@ -30,11 +30,26 @@
               <span id="profileInitial">T</span>
             </button>
             <div class="profile-dropdown hidden" id="profileMenu" role="menu">
-              <button id="menuHome" type="button" role="menuitem">Homepage</button>
-              <button id="menuEditProfile" type="button" role="menuitem">Edit profile</button>
-              <button id="menuChangePassword" type="button" role="menuitem">Đổi mật khẩu</button>
-              <button id="menuDeleteAccount" type="button" role="menuitem">Xóa tài khoản</button>
-              <button class="dropdown-danger" id="logoutButton" type="button" role="menuitem">Đăng xuất</button>
+              <button id="menuHome" type="button" role="menuitem">
+                Homepage
+              </button>
+              <button id="menuEditProfile" type="button" role="menuitem">
+                Edit profile
+              </button>
+              <button id="menuChangePassword" type="button" role="menuitem">
+                Đổi mật khẩu
+              </button>
+              <button id="menuDeleteAccount" type="button" role="menuitem">
+                Xóa tài khoản
+              </button>
+              <button
+                class="dropdown-danger"
+                id="logoutButton"
+                type="button"
+                role="menuitem"
+              >
+                Đăng xuất
+              </button>
             </div>
           </div>
         </div>
@@ -53,14 +68,25 @@
           <p class="field-error" id="loginEmailError"></p>
 
           <label for="loginPassword">Mật khẩu</label>
-          <input
-            id="loginPassword"
-            name="password"
-            type="password"
-            autocomplete="current-password"
-            placeholder="Nhập mật khẩu"
-            data-error="loginPasswordError"
-          />
+          <div class="password-field-wrapper">
+            <input
+              id="loginPassword"
+              name="password"
+              type="password"
+              autocomplete="current-password"
+              placeholder="Nhập mật khẩu"
+              data-error="loginPasswordError"
+            />
+            <button
+              class="password-toggle"
+              type="button"
+              aria-label="Hiển thị/ẩn mật khẩu"
+              aria-pressed="false"
+              data-target="loginPassword"
+            >
+              <span class="password-icon">👁️</span>
+            </button>
+          </div>
           <p class="field-error" id="loginPasswordError"></p>
 
           <button type="submit">Đăng nhập</button>
@@ -91,7 +117,12 @@
           <p class="field-error" id="genderError"></p>
 
           <label for="birthday">Ngày sinh</label>
-          <input id="birthday" name="birthday" type="date" data-error="birthdayError" />
+          <input
+            id="birthday"
+            name="birthday"
+            type="date"
+            data-error="birthdayError"
+          />
           <p class="field-error" id="birthdayError"></p>
 
           <label for="registerEmail">Email</label>
@@ -107,17 +138,30 @@
           <p class="field-error" id="registerEmailError"></p>
 
           <label for="registerPassword">Mật khẩu</label>
-          <input
-            id="registerPassword"
-            name="password"
-            type="password"
-            autocomplete="new-password"
-            placeholder="Tối thiểu 6 ký tự"
-            data-error="registerPasswordError"
-          />
+          <div class="password-field-wrapper">
+            <input
+              id="registerPassword"
+              name="password"
+              type="password"
+              autocomplete="new-password"
+              placeholder="Tối thiểu 6 ký tự"
+              data-error="registerPasswordError"
+            />
+            <button
+              class="password-toggle"
+              type="button"
+              aria-label="Hiển thị/ẩn mật khẩu"
+              aria-pressed="false"
+              data-target="registerPassword"
+            >
+              <span class="password-icon">👁️</span>
+            </button>
+          </div>
           <p class="field-error" id="registerPasswordError"></p>
 
-          <label for="hobbies">Sở thích <span class="optional">(Optional)</span></label>
+          <label for="hobbies"
+            >Sở thích <span class="optional">(Optional)</span></label
+          >
           <textarea
             id="hobbies"
             name="hobbies"
@@ -133,7 +177,12 @@
           </button>
         </form>
 
-        <section class="home-view hidden" id="homeView" aria-label="Homepage">
+        <section
+          class="home-view hidden"
+          id="homeView"
+          aria-label="Homepage"
+          tabindex="-1"
+        >
           <div class="home-card profile-card">
             <div class="avatar" id="profileAvatar">T</div>
             <div>
@@ -161,11 +210,18 @@
         <form class="settings-card hidden" id="editProfileForm" novalidate>
           <div class="form-heading">
             <h3>Edit profile</h3>
-            <button class="ghost-button back-home" type="button">Quay lại</button>
+            <button class="ghost-button back-home" type="button">
+              Quay lại
+            </button>
           </div>
 
           <label for="editFullName">Họ và tên</label>
-          <input id="editFullName" name="fullName" type="text" data-error="editFullNameError" />
+          <input
+            id="editFullName"
+            name="fullName"
+            type="text"
+            data-error="editFullNameError"
+          />
           <p class="field-error" id="editFullNameError"></p>
 
           <label for="editGender">Giới tính</label>
@@ -178,15 +234,33 @@
           <p class="field-error" id="editGenderError"></p>
 
           <label for="editBirthday">Ngày sinh</label>
-          <input id="editBirthday" name="birthday" type="date" data-error="editBirthdayError" />
+          <input
+            id="editBirthday"
+            name="birthday"
+            type="date"
+            data-error="editBirthdayError"
+          />
           <p class="field-error" id="editBirthdayError"></p>
 
           <label for="editEmail">Email</label>
-          <input id="editEmail" name="email" type="text" inputmode="email" data-error="editEmailError" />
+          <input
+            id="editEmail"
+            name="email"
+            type="text"
+            inputmode="email"
+            data-error="editEmailError"
+          />
           <p class="field-error" id="editEmailError"></p>
 
-          <label for="editHobbies">Sở thích <span class="optional">(Optional)</span></label>
-          <textarea id="editHobbies" name="hobbies" rows="3" data-error="editHobbiesError"></textarea>
+          <label for="editHobbies"
+            >Sở thích <span class="optional">(Optional)</span></label
+          >
+          <textarea
+            id="editHobbies"
+            name="hobbies"
+            rows="3"
+            data-error="editHobbiesError"
+          ></textarea>
           <p class="field-error" id="editHobbiesError"></p>
 
           <button type="submit">Lưu profile</button>
@@ -195,67 +269,150 @@
         <form class="settings-card hidden" id="changePasswordForm" novalidate>
           <div class="form-heading">
             <h3>Đổi mật khẩu</h3>
-            <button class="ghost-button back-home" type="button">Quay lại</button>
+            <button class="ghost-button back-home" type="button">
+              Quay lại
+            </button>
           </div>
 
           <label for="currentPassword">Mật khẩu hiện tại</label>
-          <input
-            id="currentPassword"
-            name="currentPassword"
-            type="password"
-            autocomplete="current-password"
-            data-error="currentPasswordError"
-          />
+          <div class="password-field-wrapper">
+            <input
+              id="currentPassword"
+              name="currentPassword"
+              type="password"
+              autocomplete="current-password"
+              data-error="currentPasswordError"
+            />
+            <button
+              class="password-toggle"
+              type="button"
+              aria-label="Hiển thị/ẩn mật khẩu"
+              aria-pressed="false"
+              data-target="currentPassword"
+            >
+              <span class="password-icon">👁️</span>
+            </button>
+          </div>
           <p class="field-error" id="currentPasswordError"></p>
 
           <label for="newPassword">Mật khẩu mới</label>
-          <input
-            id="newPassword"
-            name="newPassword"
-            type="password"
-            autocomplete="new-password"
-            data-error="newPasswordError"
-          />
+          <div class="password-field-wrapper">
+            <input
+              id="newPassword"
+              name="newPassword"
+              type="password"
+              autocomplete="new-password"
+              data-error="newPasswordError"
+            />
+            <button
+              class="password-toggle"
+              type="button"
+              aria-label="Hiển thị/ẩn mật khẩu"
+              aria-pressed="false"
+              data-target="newPassword"
+            >
+              <span class="password-icon">👁️</span>
+            </button>
+          </div>
           <p class="field-error" id="newPasswordError"></p>
 
           <label for="confirmPassword">Nhập lại mật khẩu mới</label>
-          <input
-            id="confirmPassword"
-            name="confirmPassword"
-            type="password"
-            autocomplete="new-password"
-            data-error="confirmPasswordError"
-          />
+          <div class="password-field-wrapper">
+            <input
+              id="confirmPassword"
+              name="confirmPassword"
+              type="password"
+              autocomplete="new-password"
+              data-error="confirmPasswordError"
+            />
+            <button
+              class="password-toggle"
+              type="button"
+              aria-label="Hiển thị/ẩn mật khẩu"
+              aria-pressed="false"
+              data-target="confirmPassword"
+            >
+              <span class="password-icon">👁️</span>
+            </button>
+          </div>
           <p class="field-error" id="confirmPasswordError"></p>
 
           <button type="submit">Cập nhật mật khẩu</button>
         </form>
 
-        <form class="settings-card danger-zone hidden" id="deleteAccountForm" novalidate>
+        <form
+          class="settings-card danger-zone hidden"
+          id="deleteAccountForm"
+          novalidate
+        >
           <div class="form-heading">
             <h3>Xóa tài khoản</h3>
-            <button class="ghost-button back-home" type="button">Quay lại</button>
+            <button class="ghost-button back-home" type="button">
+              Quay lại
+            </button>
           </div>
-          <p class="danger-copy">Sau khi xóa, tài khoản demo sẽ bị gỡ khỏi trình duyệt này.</p>
+          <p class="danger-copy">
+            Sau khi xóa, tài khoản demo sẽ bị gỡ khỏi trình duyệt này.
+          </p>
 
           <label for="deletePassword">Nhập mật khẩu để xác nhận</label>
-          <input
-            id="deletePassword"
-            name="deletePassword"
-            type="password"
-            autocomplete="current-password"
-            data-error="deletePasswordError"
-          />
+          <div class="password-field-wrapper">
+            <input
+              id="deletePassword"
+              name="deletePassword"
+              type="password"
+              autocomplete="current-password"
+              data-error="deletePasswordError"
+            />
+            <button
+              class="password-toggle"
+              type="button"
+              aria-label="Hiển thị/ẩn mật khẩu"
+              aria-pressed="false"
+              data-target="deletePassword"
+            >
+              <span class="password-icon">👁️</span>
+            </button>
+          </div>
           <p class="field-error" id="deletePasswordError"></p>
 
-          <button class="danger-button" type="submit">Xóa tài khoản</button>
+          <button class="danger-button" type="submit" id="deleteAccountBtn">
+            Xóa tài khoản
+          </button>
         </form>
 
         <p class="message" id="message" role="status" aria-live="polite"></p>
       </section>
     </main>
 
-    <div class="toast-container" id="toastContainer" aria-live="polite" aria-atomic="true"></div>
+    <div
+      class="toast-container"
+      id="toastContainer"
+      aria-live="polite"
+      aria-atomic="true"
+    ></div>
+
+    <dialog
+      class="confirm-dialog"
+      id="confirmDialog"
+      role="alertdialog"
+      aria-labelledby="confirmTitle"
+    >
+      <div class="confirm-dialog-content">
+        <h3 id="confirmTitle">Xác nhận xóa tài khoản</h3>
+        <p id="confirmMessage">
+          Hành động này không thể hoàn tác. Tài khoản sẽ bị xóa vĩnh viễn.
+        </p>
+        <div class="dialog-actions">
+          <button id="confirmCancel" type="button" class="ghost-button">
+            Hủy
+          </button>
+          <button id="confirmOk" type="button" class="danger-button">
+            Xóa tài khoản
+          </button>
+        </div>
+      </div>
+    </dialog>
 
     <script src="app.js"></script>
   </body>
