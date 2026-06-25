@@ -320,15 +320,11 @@ function togglePasswordVisibility(inputId) {
   const isPassword = input.type === "password";
   input.type = isPassword ? "text" : "password";
   toggleBtn.setAttribute("aria-pressed", String(!isPassword));
-}
-
-function disableFormButtons(form, disabled = true) {
-  const buttons = form.querySelectorAll("button[type='submit']");
-  buttons.forEach((btn) => {
-    btn.disabled = disabled;
-    btn.classList.toggle("is-loading", disabled);
-  });
-}
+  
+  const icon = toggleBtn.querySelector(".password-icon");
+  if (icon) {
+    icon.textContent = isPassword ? "Hide" : "Show";
+  }
 
 function showConfirmDialog(onConfirm) {
   return new Promise((resolve) => {

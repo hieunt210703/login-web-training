@@ -207,7 +207,11 @@ textarea {
   transform: translateY(-50%);
   display: grid;
   place-items: center;
-  font-size: 18px;
+  font-size: 12px;
+  font-weight: 600;
+  outline: none;
+  -webkit-appearance: none;
+  appearance: none;
 }
 
 .password-toggle:hover {
@@ -215,11 +219,18 @@ textarea {
   border-radius: 4px;
 }
 
+.password-toggle:focus {
+  outline: 2px solid #1f6bff;
+  outline-offset: -2px;
+  border-radius: 4px;
+}
+
 .password-icon {
   display: inline-block;
-  width: 18px;
-  height: 18px;
+  width: auto;
+  height: auto;
   line-height: 1;
+  letter-spacing: -0.5px;
 }
 
 input:focus,
