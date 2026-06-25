@@ -63,7 +63,9 @@ function getInitial(name) {
 
 function formatBirthday(value) {
   if (!value) return "Chưa cập nhật";
-  return new Intl.DateTimeFormat("vi-VN").format(new Date(`${value}T00:00:00`));
+
+  const [year, month, day] = value.split("-");
+  return `${day}/${month}/${year}`;
 }
 
 function getField(form, name) {
