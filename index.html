@@ -22,16 +22,18 @@
           </button>
         </div>
 
-        <form class="auth-form" id="loginForm">
+        <form class="auth-form" id="loginForm" novalidate>
           <label for="loginEmail">Email</label>
           <input
             id="loginEmail"
             name="email"
-            type="email"
+            type="text"
+            inputmode="email"
             autocomplete="email"
             placeholder="you@example.com"
-            required
+            data-error="loginEmailError"
           />
+          <p class="field-error" id="loginEmailError"></p>
 
           <label for="loginPassword">Mật khẩu</label>
           <input
@@ -40,9 +42,9 @@
             type="password"
             autocomplete="current-password"
             placeholder="Nhập mật khẩu"
-            minlength="6"
-            required
+            data-error="loginPasswordError"
           />
+          <p class="field-error" id="loginPasswordError"></p>
 
           <button type="submit">Đăng nhập</button>
           <button class="link-button" id="showRegister" type="button">
@@ -50,7 +52,7 @@
           </button>
         </form>
 
-        <form class="auth-form hidden" id="registerForm">
+        <form class="auth-form hidden" id="registerForm" novalidate>
           <label for="fullName">Họ và tên</label>
           <input
             id="fullName"
@@ -58,29 +60,34 @@
             type="text"
             autocomplete="name"
             placeholder="Nguyễn Văn A"
-            required
+            data-error="fullNameError"
           />
+          <p class="field-error" id="fullNameError"></p>
 
           <label for="gender">Giới tính</label>
-          <select id="gender" name="gender" required>
+          <select id="gender" name="gender" data-error="genderError">
             <option value="">Chọn giới tính</option>
             <option value="Nam">Nam</option>
             <option value="Nữ">Nữ</option>
             <option value="Khác">Khác</option>
           </select>
+          <p class="field-error" id="genderError"></p>
 
           <label for="birthday">Ngày sinh</label>
-          <input id="birthday" name="birthday" type="date" required />
+          <input id="birthday" name="birthday" type="date" data-error="birthdayError" />
+          <p class="field-error" id="birthdayError"></p>
 
           <label for="registerEmail">Email</label>
           <input
             id="registerEmail"
             name="email"
-            type="email"
+            type="text"
+            inputmode="email"
             autocomplete="email"
             placeholder="you@example.com"
-            required
+            data-error="registerEmailError"
           />
+          <p class="field-error" id="registerEmailError"></p>
 
           <label for="registerPassword">Mật khẩu</label>
           <input
@@ -89,9 +96,9 @@
             type="password"
             autocomplete="new-password"
             placeholder="Tối thiểu 6 ký tự"
-            minlength="6"
-            required
+            data-error="registerPasswordError"
           />
+          <p class="field-error" id="registerPasswordError"></p>
 
           <label for="hobbies">Sở thích <span class="optional">(Optional)</span></label>
           <textarea
@@ -99,7 +106,9 @@
             name="hobbies"
             rows="3"
             placeholder="Ví dụ: đọc sách, bóng đá, du lịch"
+            data-error="hobbiesError"
           ></textarea>
+          <p class="field-error" id="hobbiesError"></p>
 
           <button type="submit">Đăng ký</button>
           <button class="link-button" id="showLogin" type="button">

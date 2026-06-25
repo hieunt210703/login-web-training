@@ -96,7 +96,7 @@ select,
 textarea {
   width: 100%;
   min-height: 46px;
-  margin-bottom: 8px;
+  margin-bottom: 0;
   padding: 0 14px;
   border: 1px solid #cfd8e6;
   border-radius: 8px;
@@ -120,6 +120,26 @@ select:focus,
 textarea:focus {
   border-color: #1f6bff;
   box-shadow: 0 0 0 4px rgba(31, 107, 255, 0.14);
+}
+
+input.has-error,
+select.has-error,
+textarea.has-error {
+  border-color: #d92d20;
+}
+
+input.has-error:focus,
+select.has-error:focus,
+textarea.has-error:focus {
+  box-shadow: 0 0 0 4px rgba(217, 45, 32, 0.13);
+}
+
+.field-error {
+  min-height: 18px;
+  margin: -4px 0 4px;
+  color: #b42318;
+  font-size: 13px;
+  line-height: 1.35;
 }
 
 button {
