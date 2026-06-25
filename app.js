@@ -1,8 +1,11 @@
 const loginForm = document.querySelector("#loginForm");
 const registerForm = document.querySelector("#registerForm");
-const profileView = document.querySelector("#profileView");
-const authTitle = document.querySelector("#authTitle");
-const authSubtitle = document.querySelector("#authSubtitle");
+const homeView = document.querySelector("#homeView");
+const editProfileForm = document.querySelector("#editProfileForm");
+const changePasswordForm = document.querySelector("#changePasswordForm");
+const deleteAccountForm = document.querySelector("#deleteAccountForm");
+const pageTitle = document.querySelector("#pageTitle");
+const pageSubtitle = document.querySelector("#pageSubtitle");
 const message = document.querySelector("#message");
 const showRegister = document.querySelector("#showRegister");
 const showLogin = document.querySelector("#showLogin");
@@ -10,7 +13,7 @@ const logoutButton = document.querySelector("#logoutButton");
 const profileIcon = document.querySelector("#profileIcon");
 const profileInitial = document.querySelector("#profileInitial");
 const profileAvatar = document.querySelector("#profileAvatar");
-const profileName = document.querySelector("#profileName");
+const homeGreeting = document.querySelector("#homeGreeting");
 const profileEmail = document.querySelector("#profileEmail");
 const profileGender = document.querySelector("#profileGender");
 const profileBirthday = document.querySelector("#profileBirthday");
@@ -27,6 +30,14 @@ function getUsers() {
 
 function saveUsers(users) {
   localStorage.setItem(USERS_KEY, JSON.stringify(users));
+}
+
+function setCurrentUser(email) {
+  localStorage.setItem(CURRENT_USER_KEY, email);
+}
+
+function clearCurrentUser() {
+  localStorage.removeItem(CURRENT_USER_KEY);
 }
 
 function setMessage(text, type = "success") {
@@ -57,6 +68,7 @@ function showToast(title, description) {
     toast.addEventListener("animationend", () => toast.remove(), { once: true });
   }, 3200);
 }
+
 function getInitial(name) {
   return name.trim().charAt(0).toUpperCase() || "T";
 }
@@ -94,6 +106,12 @@ function clearFormErrors(form) {
   });
 }
 
+function clearAllForms() {
+  [loginForm, registerForm, editProfileForm, changePasswordForm, deleteAccountForm].forEach(
+    clearFormErrors,
+  );
+}
+
 function showErrors(form, errors) {
   clearFormErrors(form);
   Object.entries(errors).forEach(([name, errorMessage]) => {
@@ -119,118 +137,148 @@ function getAge(birthday) {
   return age;
 }
 
+function validateEmail(email) {
+  if (!email) return "Vui lòng nhập email.";
+  if (!EMAIL_PATTERN.test(email)) return "Email chưa đúng định dạng.";
+  return "";
+}
+
+function validateName(fullName) {
+  if (!fullName) return "Vui lòng nhập họ và tên.";
+  if (fullName.length < 2) return "Họ và tên cần tối thiểu 2 ký tự.";
+  return "";
+}
+
+function validateBirthday(birthday) {
+  if (!birthday) return "Vui lòng chọn ngày sinh.";
+  if (Number.isNaN(new Date(`${birthday}T00:00:00`).getTime())) {
+    return "Ngày sinh không hợp lệ.";
+  }
+  if (new Date(`${birthday}T00:00:00`) > new Date()) {
+    return "Ngày sinh không được lớn hơn ngày hiện tại.";
+  }
+  if (getAge(birthday) < 13) {
+    return "Bạn cần từ 13 tuổi trở lên để đăng ký.";
+  }
+  return "";
+}
+
+function validatePassword(password) {
+  if (!password) return "Vui lòng nhập mật khẩu.";
+  if (password.length < 6) return "Mật khẩu cần tối thiểu 6 ký tự.";
+  if (!/[A-Za-z]/.test(password) || !/\d/.test(password)) {
+    return "Mật khẩu cần có cả chữ và số.";
+  }
+  return "";
+}
+
+function validateHobbies(hobbies) {
+  if (hobbies.length > 120) return "Sở thích không nên quá 120 ký tự.";
+  return "";
+}
+
+function getProfileErrors(form) {
+  const fullName = getFieldValue(form, "fullName");
+  const gender = getFieldValue(form, "gender");
+  const birthday = getFieldValue(form, "birthday");
+  const email = getFieldValue(form, "email").toLowerCase();
+  const hobbies = getFieldValue(form, "hobbies");
+  const errors = {};
+
+  const nameError = validateName(fullName);
+  const birthdayError = validateBirthday(birthday);
+  const emailError = validateEmail(email);
+  const hobbiesError = validateHobbies(hobbies);
+
+  if (nameError) errors.fullName = nameError;
+  if (!gender) errors.gender = "Vui lòng chọn giới tính.";
+  if (birthdayError) errors.birthday = birthdayError;
+  if (emailError) errors.email = emailError;
+  if (hobbiesError) errors.hobbies = hobbiesError;
+
+  return errors;
+}
+
 function validateLoginForm() {
   const email = getFieldValue(loginForm, "email").toLowerCase();
   const password = getFieldValue(loginForm, "password");
   const errors = {};
+  const emailError = validateEmail(email);
 
-  if (!email) {
-    errors.email = "Vui lòng nhập email.";
-  } else if (!EMAIL_PATTERN.test(email)) {
-    errors.email = "Email chưa đúng định dạng.";
-  }
-
-  if (!password) {
-    errors.password = "Vui lòng nhập mật khẩu.";
-  }
+  if (emailError) errors.email = emailError;
+  if (!password) errors.password = "Vui lòng nhập mật khẩu.";
 
   showErrors(loginForm, errors);
   return Object.keys(errors).length === 0;
 }
 
 function validateRegisterForm() {
-  const fullName = getFieldValue(registerForm, "fullName");
-  const gender = getFieldValue(registerForm, "gender");
-  const birthday = getFieldValue(registerForm, "birthday");
-  const email = getFieldValue(registerForm, "email").toLowerCase();
+  const errors = getProfileErrors(registerForm);
   const password = getFieldValue(registerForm, "password");
-  const hobbies = getFieldValue(registerForm, "hobbies");
-  const errors = {};
+  const passwordError = validatePassword(password);
 
-  if (!fullName) {
-    errors.fullName = "Vui lòng nhập họ và tên.";
-  } else if (fullName.length < 2) {
-    errors.fullName = "Họ và tên cần tối thiểu 2 ký tự.";
-  }
-
-  if (!gender) {
-    errors.gender = "Vui lòng chọn giới tính.";
-  }
-
-  if (!birthday) {
-    errors.birthday = "Vui lòng chọn ngày sinh.";
-  } else if (Number.isNaN(new Date(`${birthday}T00:00:00`).getTime())) {
-    errors.birthday = "Ngày sinh không hợp lệ.";
-  } else if (new Date(`${birthday}T00:00:00`) > new Date()) {
-    errors.birthday = "Ngày sinh không được lớn hơn ngày hiện tại.";
-  } else if (getAge(birthday) < 13) {
-    errors.birthday = "Bạn cần từ 13 tuổi trở lên để đăng ký.";
-  }
-
-  if (!email) {
-    errors.email = "Vui lòng nhập email.";
-  } else if (!EMAIL_PATTERN.test(email)) {
-    errors.email = "Email chưa đúng định dạng.";
-  }
-
-  if (!password) {
-    errors.password = "Vui lòng nhập mật khẩu.";
-  } else if (password.length < 6) {
-    errors.password = "Mật khẩu cần tối thiểu 6 ký tự.";
-  } else if (!/[A-Za-z]/.test(password) || !/\d/.test(password)) {
-    errors.password = "Mật khẩu cần có cả chữ và số.";
-  }
-
-  if (hobbies.length > 120) {
-    errors.hobbies = "Sở thích không nên quá 120 ký tự.";
-  }
+  if (passwordError) errors.password = passwordError;
 
   showErrors(registerForm, errors);
   return Object.keys(errors).length === 0;
 }
 
-function showLoginView() {
-  authTitle.textContent = "Đăng nhập";
-  authSubtitle.textContent = "Vui lòng nhập email và mật khẩu để tiếp tục.";
-  loginForm.classList.remove("hidden");
-  registerForm.classList.add("hidden");
-  profileView.classList.add("hidden");
-  profileIcon.classList.add("hidden");
-  clearFormErrors(loginForm);
-  clearFormErrors(registerForm);
-  clearMessage();
+function validateEditProfileForm(currentEmail) {
+  const errors = getProfileErrors(editProfileForm);
+  const email = getFieldValue(editProfileForm, "email").toLowerCase();
+  const isDuplicate = getUsers().some(
+    (user) => user.email === email && user.email !== currentEmail,
+  );
+
+  if (isDuplicate) {
+    errors.email = "Email này đã được đăng ký.";
+  }
+
+  showErrors(editProfileForm, errors);
+  return Object.keys(errors).length === 0;
 }
 
-function showRegisterView() {
-  authTitle.textContent = "Đăng ký profile";
-  authSubtitle.textContent = "Tạo tài khoản mới với thông tin cá nhân của bạn.";
-  registerForm.classList.remove("hidden");
-  loginForm.classList.add("hidden");
-  profileView.classList.add("hidden");
-  profileIcon.classList.add("hidden");
-  clearFormErrors(loginForm);
-  clearFormErrors(registerForm);
-  clearMessage();
+function validateChangePasswordForm(user) {
+  const currentPassword = getFieldValue(changePasswordForm, "currentPassword");
+  const newPassword = getFieldValue(changePasswordForm, "newPassword");
+  const confirmPassword = getFieldValue(changePasswordForm, "confirmPassword");
+  const errors = {};
+  const newPasswordError = validatePassword(newPassword);
+
+  if (!currentPassword) {
+    errors.currentPassword = "Vui lòng nhập mật khẩu hiện tại.";
+  } else if (currentPassword !== user.password) {
+    errors.currentPassword = "Mật khẩu hiện tại không đúng.";
+  }
+
+  if (newPasswordError) {
+    errors.newPassword = newPasswordError;
+  } else if (newPassword === currentPassword) {
+    errors.newPassword = "Mật khẩu mới cần khác mật khẩu hiện tại.";
+  }
+
+  if (!confirmPassword) {
+    errors.confirmPassword = "Vui lòng nhập lại mật khẩu mới.";
+  } else if (confirmPassword !== newPassword) {
+    errors.confirmPassword = "Mật khẩu nhập lại không khớp.";
+  }
+
+  showErrors(changePasswordForm, errors);
+  return Object.keys(errors).length === 0;
 }
 
-function showProfileView(user) {
-  const initial = getInitial(user.fullName);
+function validateDeleteAccountForm(user) {
+  const deletePassword = getFieldValue(deleteAccountForm, "deletePassword");
+  const errors = {};
 
-  authTitle.textContent = "Profile";
-  authSubtitle.textContent = "Thông tin tài khoản của bạn.";
-  loginForm.classList.add("hidden");
-  registerForm.classList.add("hidden");
-  profileView.classList.remove("hidden");
-  profileIcon.classList.remove("hidden");
+  if (!deletePassword) {
+    errors.deletePassword = "Vui lòng nhập mật khẩu để xác nhận.";
+  } else if (deletePassword !== user.password) {
+    errors.deletePassword = "Mật khẩu xác nhận không đúng.";
+  }
 
-  profileInitial.textContent = initial;
-  profileAvatar.textContent = initial;
-  profileName.textContent = user.fullName;
-  profileEmail.textContent = user.email;
-  profileGender.textContent = user.gender;
-  profileBirthday.textContent = formatBirthday(user.birthday);
-  profileHobbies.textContent = user.hobbies || "Chưa cập nhật";
-  clearMessage();
+  showErrors(deleteAccountForm, errors);
+  return Object.keys(errors).length === 0;
 }
 
 function getCurrentUser() {
@@ -238,15 +286,85 @@ function getCurrentUser() {
   return getUsers().find((user) => user.email === email);
 }
 
+function updateUser(currentEmail, updater) {
+  const users = getUsers();
+  const index = users.findIndex((user) => user.email === currentEmail);
+
+  if (index === -1) return null;
+
+  users[index] = updater(users[index]);
+  saveUsers(users);
+  setCurrentUser(users[index].email);
+  return users[index];
+}
+
+function fillEditProfileForm(user) {
+  editProfileForm.elements.fullName.value = user.fullName;
+  editProfileForm.elements.gender.value = user.gender;
+  editProfileForm.elements.birthday.value = user.birthday;
+  editProfileForm.elements.email.value = user.email;
+  editProfileForm.elements.hobbies.value = user.hobbies || "";
+}
+
+function renderHome(user) {
+  const initial = getInitial(user.fullName);
+
+  pageTitle.textContent = "Homepage";
+  pageSubtitle.textContent = `Chào mừng ${user.fullName}.`;
+  profileInitial.textContent = initial;
+  profileAvatar.textContent = initial;
+  homeGreeting.textContent = user.fullName;
+  profileEmail.textContent = user.email;
+  profileGender.textContent = user.gender;
+  profileBirthday.textContent = formatBirthday(user.birthday);
+  profileHobbies.textContent = user.hobbies || "Chưa cập nhật";
+  fillEditProfileForm(user);
+}
+
+function showLoginView() {
+  pageTitle.textContent = "Đăng nhập";
+  pageSubtitle.textContent = "Vui lòng nhập email và mật khẩu để tiếp tục.";
+  loginForm.classList.remove("hidden");
+  registerForm.classList.add("hidden");
+  homeView.classList.add("hidden");
+  profileIcon.classList.add("hidden");
+  clearAllForms();
+  clearMessage();
+}
+
+function showRegisterView() {
+  pageTitle.textContent = "Đăng ký profile";
+  pageSubtitle.textContent = "Tạo tài khoản mới với thông tin cá nhân của bạn.";
+  registerForm.classList.remove("hidden");
+  loginForm.classList.add("hidden");
+  homeView.classList.add("hidden");
+  profileIcon.classList.add("hidden");
+  clearAllForms();
+  clearMessage();
+}
+
+function showHomeView(user) {
+  loginForm.classList.add("hidden");
+  registerForm.classList.add("hidden");
+  homeView.classList.remove("hidden");
+  profileIcon.classList.remove("hidden");
+  changePasswordForm.reset();
+  deleteAccountForm.reset();
+  clearAllForms();
+  clearMessage();
+  renderHome(user);
+}
+
 showRegister.addEventListener("click", showRegisterView);
 showLogin.addEventListener("click", showLoginView);
 profileIcon.addEventListener("click", () => {
   const currentUser = getCurrentUser();
-  if (currentUser) showProfileView(currentUser);
+  if (currentUser) showHomeView(currentUser);
 });
 
-loginForm.addEventListener("input", () => clearMessage());
-registerForm.addEventListener("input", () => clearMessage());
+[loginForm, registerForm, editProfileForm, changePasswordForm, deleteAccountForm].forEach((form) => {
+  form.addEventListener("input", () => clearMessage());
+});
 
 loginForm.addEventListener("submit", (event) => {
   event.preventDefault();
@@ -267,8 +385,8 @@ loginForm.addEventListener("submit", (event) => {
     return;
   }
 
-  localStorage.setItem(CURRENT_USER_KEY, user.email);
-  showProfileView(user);
+  setCurrentUser(user.email);
+  showHomeView(user);
   showToast("Đăng nhập thành công", `Chào mừng ${user.fullName} quay lại.`);
 });
 
@@ -300,14 +418,87 @@ registerForm.addEventListener("submit", (event) => {
 
   users.push(newUser);
   saveUsers(users);
-  localStorage.setItem(CURRENT_USER_KEY, newUser.email);
+  setCurrentUser(newUser.email);
   registerForm.reset();
-  showProfileView(newUser);
+  showHomeView(newUser);
   showToast("Đăng ký thành công", "Profile của bạn đã được tạo.");
 });
 
+editProfileForm.addEventListener("submit", (event) => {
+  event.preventDefault();
+
+  const currentUser = getCurrentUser();
+  if (!currentUser) return showLoginView();
+
+  if (!validateEditProfileForm(currentUser.email)) {
+    setMessage("Vui lòng sửa các lỗi trong form profile.", "error");
+    return;
+  }
+
+  const updatedUser = updateUser(currentUser.email, (user) => ({
+    ...user,
+    fullName: getFieldValue(editProfileForm, "fullName"),
+    gender: getFieldValue(editProfileForm, "gender"),
+    birthday: getFieldValue(editProfileForm, "birthday"),
+    email: getFieldValue(editProfileForm, "email").toLowerCase(),
+    hobbies: getFieldValue(editProfileForm, "hobbies"),
+  }));
+
+  if (!updatedUser) return showLoginView();
+
+  renderHome(updatedUser);
+  setMessage("Profile đã được cập nhật.");
+  showToast("Cập nhật profile thành công", "Thông tin của bạn đã được lưu.");
+});
+
+changePasswordForm.addEventListener("submit", (event) => {
+  event.preventDefault();
+
+  const currentUser = getCurrentUser();
+  if (!currentUser) return showLoginView();
+
+  if (!validateChangePasswordForm(currentUser)) {
+    setMessage("Vui lòng kiểm tra lại thông tin đổi mật khẩu.", "error");
+    return;
+  }
+
+  const updatedUser = updateUser(currentUser.email, (user) => ({
+    ...user,
+    password: getFieldValue(changePasswordForm, "newPassword"),
+  }));
+
+  if (!updatedUser) return showLoginView();
+
+  changePasswordForm.reset();
+  clearFormErrors(changePasswordForm);
+  setMessage("Mật khẩu đã được cập nhật.");
+  showToast("Đổi mật khẩu thành công", "Bạn có thể dùng mật khẩu mới ở lần đăng nhập sau.");
+});
+
+deleteAccountForm.addEventListener("submit", (event) => {
+  event.preventDefault();
+
+  const currentUser = getCurrentUser();
+  if (!currentUser) return showLoginView();
+
+  if (!validateDeleteAccountForm(currentUser)) {
+    setMessage("Vui lòng xác nhận lại mật khẩu trước khi xóa tài khoản.", "error");
+    return;
+  }
+
+  const users = getUsers().filter((user) => user.email !== currentUser.email);
+  saveUsers(users);
+  clearCurrentUser();
+  loginForm.reset();
+  registerForm.reset();
+  changePasswordForm.reset();
+  deleteAccountForm.reset();
+  showLoginView();
+  showToast("Đã xóa tài khoản", "Tài khoản demo đã được gỡ khỏi trình duyệt này.");
+});
+
 logoutButton.addEventListener("click", () => {
-  localStorage.removeItem(CURRENT_USER_KEY);
+  clearCurrentUser();
   loginForm.reset();
   showLoginView();
   setMessage("Bạn đã đăng xuất.");
@@ -317,7 +508,7 @@ logoutButton.addEventListener("click", () => {
 const currentUser = getCurrentUser();
 
 if (currentUser) {
-  showProfileView(currentUser);
+  showHomeView(currentUser);
 } else {
   showLoginView();
 }

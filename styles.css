@@ -26,8 +26,8 @@ body {
   padding: 32px 16px;
 }
 
-.auth-panel {
-  width: min(100%, 480px);
+.app-panel {
+  width: min(100%, 760px);
   padding: 32px;
   border: 1px solid rgba(22, 32, 51, 0.08);
   border-radius: 8px;
@@ -74,15 +74,36 @@ h1 {
   line-height: 1.15;
 }
 
+h2,
+h3 {
+  margin: 0;
+  color: #0f172a;
+}
+
+h2 {
+  margin-bottom: 4px;
+  font-size: 24px;
+}
+
+h3 {
+  margin-bottom: 18px;
+  font-size: 18px;
+}
+
 .subtitle {
   margin: 0 0 28px;
   color: #5d6b82;
   line-height: 1.55;
 }
 
-.auth-form {
+.auth-form,
+.settings-card {
   display: grid;
   gap: 10px;
+}
+
+.auth-form {
+  max-width: 480px;
 }
 
 label {
@@ -179,12 +200,14 @@ button:active {
   color: #174fbf;
 }
 
-.logout-button {
+.logout-button,
+.danger-button {
   width: 100%;
   background: #9f2d2d;
 }
 
-.logout-button:hover {
+.logout-button:hover,
+.danger-button:hover {
   background: #842525;
 }
 
@@ -247,24 +270,41 @@ button:active {
 .toast.is-leaving {
   animation: toast-out 180ms ease both;
 }
+
 .optional {
   color: #7a8799;
   font-weight: 500;
 }
 
-.profile-view {
+.home-view {
   display: grid;
   gap: 22px;
+}
+
+.home-card,
+.settings-card {
+  border: 1px solid #d8e1ef;
+  border-radius: 8px;
+  background: #f8fbff;
+}
+
+.home-card {
+  padding: 18px;
+}
+
+.settings-card {
+  padding: 20px;
 }
 
 .profile-card {
   display: flex;
   align-items: center;
   gap: 16px;
-  padding: 18px;
-  border: 1px solid #d8e1ef;
-  border-radius: 8px;
-  background: #f8fbff;
+}
+
+.profile-card p {
+  margin: 0;
+  color: #5d6b82;
 }
 
 .avatar {
@@ -278,16 +318,6 @@ button:active {
   color: white;
   font-size: 24px;
   font-weight: 800;
-}
-
-h2 {
-  margin: 0 0 4px;
-  font-size: 22px;
-}
-
-.profile-card p {
-  margin: 0;
-  color: #5d6b82;
 }
 
 .profile-details {
@@ -315,6 +345,17 @@ dd {
   font-weight: 650;
 }
 
+.danger-zone {
+  border-color: rgba(159, 45, 45, 0.28);
+  background: #fff8f8;
+}
+
+.danger-copy {
+  margin: -6px 0 10px;
+  color: #6b3b3b;
+  line-height: 1.5;
+}
+
 @keyframes toast-in {
   from {
     opacity: 0;
@@ -333,12 +374,13 @@ dd {
     transform: translateY(8px);
   }
 }
+
 .hidden {
   display: none;
 }
 
-@media (max-width: 480px) {
-  .auth-panel {
+@media (max-width: 640px) {
+  .app-panel {
     padding: 24px;
   }
 
@@ -348,5 +390,10 @@ dd {
 
   .profile-card {
     align-items: flex-start;
+  }
+
+  .toast-container {
+    right: 16px;
+    bottom: 16px;
   }
 }
