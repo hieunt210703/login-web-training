@@ -1,25 +1,55 @@
-# Login Web
+# Login Profile Web
 
-Web tĩnh cơ bản gồm email, password và nút đăng nhập.
+Web tĩnh demo cho luồng đăng ký profile, đăng nhập, xem thông tin cá nhân và đăng xuất.
+
+Live demo: https://login-web-training.vercel.app
+
+## Tính năng
+
+- Đăng ký profile với họ và tên, giới tính, ngày sinh, email, mật khẩu và sở thích optional.
+- Validation custom bằng JavaScript, không dùng validation mặc định của trình duyệt.
+- Hiển thị lỗi riêng dưới từng field.
+- Toast message khi đăng ký, đăng nhập và đăng xuất thành công.
+- Màn hình profile có avatar chữ cái đầu, thông tin email, giới tính, ngày sinh và sở thích.
+- Ngày sinh hiển thị theo định dạng `dd/MM/yyyy`.
+- Lưu tài khoản demo bằng `localStorage` để có thể đăng xuất và đăng nhập lại trên cùng trình duyệt.
+
+## Cấu trúc file
+
+```text
+.
+├── index.html      # Markup cho form đăng nhập, đăng ký và profile
+├── styles.css      # Giao diện, responsive, field error và toast
+├── app.js          # Validation, localStorage auth demo và luồng UI
+├── vercel.json     # Cấu hình Vercel
+├── netlify.toml    # Cấu hình Netlify nếu cần
+└── README.md
+```
 
 ## Chạy local
 
-Mở trực tiếp `index.html` trong trình duyệt.
+Mở trực tiếp file `index.html` trong trình duyệt.
 
-## Deploy
-
-### Vercel
+Hoặc chạy server tĩnh nếu muốn test qua localhost:
 
 ```bash
-npx vercel
+npx serve .
 ```
 
-### Netlify
+## Deploy Vercel
+
+Deploy production:
 
 ```bash
-npx netlify deploy --prod --dir .
+npx vercel --prod --yes
 ```
 
-### GitHub Pages
+Sau khi deploy, Vercel alias chính đang dùng là:
 
-Đưa các file trong thư mục này lên repository GitHub, sau đó bật Pages từ branch chính.
+```text
+https://login-web-training.vercel.app
+```
+
+## Lưu ý
+
+Đây là demo frontend thuần HTML/CSS/JS. Email, password và profile được lưu trong `localStorage`, nên chưa phù hợp cho production thật. Nếu dùng thật, cần backend/API, database, hash password và session/token bảo mật.
