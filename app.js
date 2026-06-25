@@ -325,6 +325,7 @@ function togglePasswordVisibility(inputId) {
   if (icon) {
     icon.textContent = isPassword ? "Hide" : "Show";
   }
+}
 
 function showConfirmDialog(onConfirm) {
   return new Promise((resolve) => {
