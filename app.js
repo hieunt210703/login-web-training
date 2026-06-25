@@ -10,7 +10,9 @@ const message = document.querySelector("#message");
 const showRegister = document.querySelector("#showRegister");
 const showLogin = document.querySelector("#showLogin");
 const logoutButton = document.querySelector("#logoutButton");
+const profileMenuWrap = document.querySelector("#profileMenuWrap");
 const profileIcon = document.querySelector("#profileIcon");
+const profileMenu = document.querySelector("#profileMenu");
 const profileInitial = document.querySelector("#profileInitial");
 const profileAvatar = document.querySelector("#profileAvatar");
 const homeGreeting = document.querySelector("#homeGreeting");
@@ -18,11 +20,16 @@ const profileEmail = document.querySelector("#profileEmail");
 const profileGender = document.querySelector("#profileGender");
 const profileBirthday = document.querySelector("#profileBirthday");
 const profileHobbies = document.querySelector("#profileHobbies");
+const menuHome = document.querySelector("#menuHome");
+const menuEditProfile = document.querySelector("#menuEditProfile");
+const menuChangePassword = document.querySelector("#menuChangePassword");
+const menuDeleteAccount = document.querySelector("#menuDeleteAccount");
 const toastContainer = document.querySelector("#toastContainer");
 
 const USERS_KEY = "training_users";
 const CURRENT_USER_KEY = "training_current_user";
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const protectedViews = [homeView, editProfileForm, changePasswordForm, deleteAccountForm];
 
 function getUsers() {
   return JSON.parse(localStorage.getItem(USERS_KEY) || "[]");
@@ -306,11 +313,20 @@ function fillEditProfileForm(user) {
   editProfileForm.elements.hobbies.value = user.hobbies || "";
 }
 
+function closeProfileMenu() {
+  profileMenu.classList.add("hidden");
+  profileIcon.setAttribute("aria-expanded", "false");
+}
+
+function hideAllViews() {
+  loginForm.classList.add("hidden");
+  registerForm.classList.add("hidden");
+  protectedViews.forEach((view) => view.classList.add("hidden"));
+}
+
 function renderHome(user) {
   const initial = getInitial(user.fullName);
 
-  pageTitle.textContent = "Homepage";
-  pageSubtitle.textContent = `Chào mừng ${user.fullName}.`;
   profileInitial.textContent = initial;
   profileAvatar.textContent = initial;
   homeGreeting.textContent = user.fullName;
@@ -324,10 +340,10 @@ function renderHome(user) {
 function showLoginView() {
   pageTitle.textContent = "Đăng nhập";
   pageSubtitle.textContent = "Vui lòng nhập email và mật khẩu để tiếp tục.";
+  hideAllViews();
   loginForm.classList.remove("hidden");
-  registerForm.classList.add("hidden");
-  homeView.classList.add("hidden");
-  profileIcon.classList.add("hidden");
+  profileMenuWrap.classList.add("hidden");
+  closeProfileMenu();
   clearAllForms();
   clearMessage();
 }
@@ -335,19 +351,21 @@ function showLoginView() {
 function showRegisterView() {
   pageTitle.textContent = "Đăng ký profile";
   pageSubtitle.textContent = "Tạo tài khoản mới với thông tin cá nhân của bạn.";
+  hideAllViews();
   registerForm.classList.remove("hidden");
-  loginForm.classList.add("hidden");
-  homeView.classList.add("hidden");
-  profileIcon.classList.add("hidden");
+  profileMenuWrap.classList.add("hidden");
+  closeProfileMenu();
   clearAllForms();
   clearMessage();
 }
 
 function showHomeView(user) {
-  loginForm.classList.add("hidden");
-  registerForm.classList.add("hidden");
+  pageTitle.textContent = "Homepage";
+  pageSubtitle.textContent = `Chào mừng ${user.fullName}.`;
+  hideAllViews();
   homeView.classList.remove("hidden");
-  profileIcon.classList.remove("hidden");
+  profileMenuWrap.classList.remove("hidden");
+  closeProfileMenu();
   changePasswordForm.reset();
   deleteAccountForm.reset();
   clearAllForms();
@@ -355,11 +373,70 @@ function showHomeView(user) {
   renderHome(user);
 }
 
+function showEditProfileView(user) {
+  pageTitle.textContent = "Edit profile";
+  pageSubtitle.textContent = "Cập nhật thông tin cá nhân của bạn.";
+  hideAllViews();
+  editProfileForm.classList.remove("hidden");
+  profileMenuWrap.classList.remove("hidden");
+  closeProfileMenu();
+  clearAllForms();
+  clearMessage();
+  fillEditProfileForm(user);
+}
+
+function showChangePasswordView() {
+  pageTitle.textContent = "Đổi mật khẩu";
+  pageSubtitle.textContent = "Cập nhật mật khẩu đăng nhập của bạn.";
+  hideAllViews();
+  changePasswordForm.classList.remove("hidden");
+  profileMenuWrap.classList.remove("hidden");
+  closeProfileMenu();
+  changePasswordForm.reset();
+  clearAllForms();
+  clearMessage();
+}
+
+function showDeleteAccountView() {
+  pageTitle.textContent = "Xóa tài khoản";
+  pageSubtitle.textContent = "Xác nhận mật khẩu trước khi xóa tài khoản demo.";
+  hideAllViews();
+  deleteAccountForm.classList.remove("hidden");
+  profileMenuWrap.classList.remove("hidden");
+  closeProfileMenu();
+  deleteAccountForm.reset();
+  clearAllForms();
+  clearMessage();
+}
+
+function requireUser(callback) {
+  const currentUser = getCurrentUser();
+  if (!currentUser) {
+    showLoginView();
+    return;
+  }
+
+  callback(currentUser);
+}
+
 showRegister.addEventListener("click", showRegisterView);
 showLogin.addEventListener("click", showLoginView);
 profileIcon.addEventListener("click", () => {
-  const currentUser = getCurrentUser();
-  if (currentUser) showHomeView(currentUser);
+  const isOpen = !profileMenu.classList.contains("hidden");
+  profileMenu.classList.toggle("hidden", isOpen);
+  profileIcon.setAttribute("aria-expanded", String(!isOpen));
+});
+menuHome.addEventListener("click", () => requireUser(showHomeView));
+menuEditProfile.addEventListener("click", () => requireUser(showEditProfileView));
+menuChangePassword.addEventListener("click", () => requireUser(showChangePasswordView));
+menuDeleteAccount.addEventListener("click", () => requireUser(showDeleteAccountView));
+document.querySelectorAll(".back-home").forEach((button) => {
+  button.addEventListener("click", () => requireUser(showHomeView));
+});
+document.addEventListener("click", (event) => {
+  if (!profileMenuWrap.contains(event.target)) {
+    closeProfileMenu();
+  }
 });
 
 [loginForm, registerForm, editProfileForm, changePasswordForm, deleteAccountForm].forEach((form) => {
@@ -446,7 +523,7 @@ editProfileForm.addEventListener("submit", (event) => {
 
   if (!updatedUser) return showLoginView();
 
-  renderHome(updatedUser);
+  showHomeView(updatedUser);
   setMessage("Profile đã được cập nhật.");
   showToast("Cập nhật profile thành công", "Thông tin của bạn đã được lưu.");
 });
@@ -469,8 +546,7 @@ changePasswordForm.addEventListener("submit", (event) => {
 
   if (!updatedUser) return showLoginView();
 
-  changePasswordForm.reset();
-  clearFormErrors(changePasswordForm);
+  showHomeView(updatedUser);
   setMessage("Mật khẩu đã được cập nhật.");
   showToast("Đổi mật khẩu thành công", "Bạn có thể dùng mật khẩu mới ở lần đăng nhập sau.");
 });
@@ -500,6 +576,7 @@ deleteAccountForm.addEventListener("submit", (event) => {
 logoutButton.addEventListener("click", () => {
   clearCurrentUser();
   loginForm.reset();
+  closeProfileMenu();
   showLoginView();
   setMessage("Bạn đã đăng xuất.");
   showToast("Đã đăng xuất", "Bạn có thể đăng nhập lại bất cứ lúc nào.");

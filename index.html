@@ -17,9 +17,26 @@
               Vui lòng nhập email và mật khẩu để tiếp tục.
             </p>
           </div>
-          <button class="profile-icon hidden" id="profileIcon" type="button" aria-label="Homepage">
-            <span id="profileInitial">T</span>
-          </button>
+
+          <div class="profile-menu hidden" id="profileMenuWrap">
+            <button
+              class="profile-icon"
+              id="profileIcon"
+              type="button"
+              aria-label="Mở menu tài khoản"
+              aria-expanded="false"
+              aria-controls="profileMenu"
+            >
+              <span id="profileInitial">T</span>
+            </button>
+            <div class="profile-dropdown hidden" id="profileMenu" role="menu">
+              <button id="menuHome" type="button" role="menuitem">Homepage</button>
+              <button id="menuEditProfile" type="button" role="menuitem">Edit profile</button>
+              <button id="menuChangePassword" type="button" role="menuitem">Đổi mật khẩu</button>
+              <button id="menuDeleteAccount" type="button" role="menuitem">Xóa tài khoản</button>
+              <button class="dropdown-danger" id="logoutButton" type="button" role="menuitem">Đăng xuất</button>
+            </div>
+          </div>
         </div>
 
         <form class="auth-form" id="loginForm" novalidate>
@@ -139,93 +156,100 @@
               <dd id="profileHobbies"></dd>
             </div>
           </dl>
-
-          <form class="settings-card" id="editProfileForm" novalidate>
-            <h3>Edit profile</h3>
-
-            <label for="editFullName">Họ và tên</label>
-            <input id="editFullName" name="fullName" type="text" data-error="editFullNameError" />
-            <p class="field-error" id="editFullNameError"></p>
-
-            <label for="editGender">Giới tính</label>
-            <select id="editGender" name="gender" data-error="editGenderError">
-              <option value="">Chọn giới tính</option>
-              <option value="Nam">Nam</option>
-              <option value="Nữ">Nữ</option>
-              <option value="Khác">Khác</option>
-            </select>
-            <p class="field-error" id="editGenderError"></p>
-
-            <label for="editBirthday">Ngày sinh</label>
-            <input id="editBirthday" name="birthday" type="date" data-error="editBirthdayError" />
-            <p class="field-error" id="editBirthdayError"></p>
-
-            <label for="editEmail">Email</label>
-            <input id="editEmail" name="email" type="text" inputmode="email" data-error="editEmailError" />
-            <p class="field-error" id="editEmailError"></p>
-
-            <label for="editHobbies">Sở thích <span class="optional">(Optional)</span></label>
-            <textarea id="editHobbies" name="hobbies" rows="3" data-error="editHobbiesError"></textarea>
-            <p class="field-error" id="editHobbiesError"></p>
-
-            <button type="submit">Lưu profile</button>
-          </form>
-
-          <form class="settings-card" id="changePasswordForm" novalidate>
-            <h3>Đổi mật khẩu</h3>
-
-            <label for="currentPassword">Mật khẩu hiện tại</label>
-            <input
-              id="currentPassword"
-              name="currentPassword"
-              type="password"
-              autocomplete="current-password"
-              data-error="currentPasswordError"
-            />
-            <p class="field-error" id="currentPasswordError"></p>
-
-            <label for="newPassword">Mật khẩu mới</label>
-            <input
-              id="newPassword"
-              name="newPassword"
-              type="password"
-              autocomplete="new-password"
-              data-error="newPasswordError"
-            />
-            <p class="field-error" id="newPasswordError"></p>
-
-            <label for="confirmPassword">Nhập lại mật khẩu mới</label>
-            <input
-              id="confirmPassword"
-              name="confirmPassword"
-              type="password"
-              autocomplete="new-password"
-              data-error="confirmPasswordError"
-            />
-            <p class="field-error" id="confirmPasswordError"></p>
-
-            <button type="submit">Cập nhật mật khẩu</button>
-          </form>
-
-          <form class="settings-card danger-zone" id="deleteAccountForm" novalidate>
-            <h3>Xóa tài khoản</h3>
-            <p class="danger-copy">Sau khi xóa, tài khoản demo sẽ bị gỡ khỏi trình duyệt này.</p>
-
-            <label for="deletePassword">Nhập mật khẩu để xác nhận</label>
-            <input
-              id="deletePassword"
-              name="deletePassword"
-              type="password"
-              autocomplete="current-password"
-              data-error="deletePasswordError"
-            />
-            <p class="field-error" id="deletePasswordError"></p>
-
-            <button class="danger-button" type="submit">Xóa tài khoản</button>
-          </form>
-
-          <button class="logout-button" id="logoutButton" type="button">Đăng xuất</button>
         </section>
+
+        <form class="settings-card hidden" id="editProfileForm" novalidate>
+          <div class="form-heading">
+            <h3>Edit profile</h3>
+            <button class="ghost-button back-home" type="button">Quay lại</button>
+          </div>
+
+          <label for="editFullName">Họ và tên</label>
+          <input id="editFullName" name="fullName" type="text" data-error="editFullNameError" />
+          <p class="field-error" id="editFullNameError"></p>
+
+          <label for="editGender">Giới tính</label>
+          <select id="editGender" name="gender" data-error="editGenderError">
+            <option value="">Chọn giới tính</option>
+            <option value="Nam">Nam</option>
+            <option value="Nữ">Nữ</option>
+            <option value="Khác">Khác</option>
+          </select>
+          <p class="field-error" id="editGenderError"></p>
+
+          <label for="editBirthday">Ngày sinh</label>
+          <input id="editBirthday" name="birthday" type="date" data-error="editBirthdayError" />
+          <p class="field-error" id="editBirthdayError"></p>
+
+          <label for="editEmail">Email</label>
+          <input id="editEmail" name="email" type="text" inputmode="email" data-error="editEmailError" />
+          <p class="field-error" id="editEmailError"></p>
+
+          <label for="editHobbies">Sở thích <span class="optional">(Optional)</span></label>
+          <textarea id="editHobbies" name="hobbies" rows="3" data-error="editHobbiesError"></textarea>
+          <p class="field-error" id="editHobbiesError"></p>
+
+          <button type="submit">Lưu profile</button>
+        </form>
+
+        <form class="settings-card hidden" id="changePasswordForm" novalidate>
+          <div class="form-heading">
+            <h3>Đổi mật khẩu</h3>
+            <button class="ghost-button back-home" type="button">Quay lại</button>
+          </div>
+
+          <label for="currentPassword">Mật khẩu hiện tại</label>
+          <input
+            id="currentPassword"
+            name="currentPassword"
+            type="password"
+            autocomplete="current-password"
+            data-error="currentPasswordError"
+          />
+          <p class="field-error" id="currentPasswordError"></p>
+
+          <label for="newPassword">Mật khẩu mới</label>
+          <input
+            id="newPassword"
+            name="newPassword"
+            type="password"
+            autocomplete="new-password"
+            data-error="newPasswordError"
+          />
+          <p class="field-error" id="newPasswordError"></p>
+
+          <label for="confirmPassword">Nhập lại mật khẩu mới</label>
+          <input
+            id="confirmPassword"
+            name="confirmPassword"
+            type="password"
+            autocomplete="new-password"
+            data-error="confirmPasswordError"
+          />
+          <p class="field-error" id="confirmPasswordError"></p>
+
+          <button type="submit">Cập nhật mật khẩu</button>
+        </form>
+
+        <form class="settings-card danger-zone hidden" id="deleteAccountForm" novalidate>
+          <div class="form-heading">
+            <h3>Xóa tài khoản</h3>
+            <button class="ghost-button back-home" type="button">Quay lại</button>
+          </div>
+          <p class="danger-copy">Sau khi xóa, tài khoản demo sẽ bị gỡ khỏi trình duyệt này.</p>
+
+          <label for="deletePassword">Nhập mật khẩu để xác nhận</label>
+          <input
+            id="deletePassword"
+            name="deletePassword"
+            type="password"
+            autocomplete="current-password"
+            data-error="deletePasswordError"
+          />
+          <p class="field-error" id="deletePasswordError"></p>
+
+          <button class="danger-button" type="submit">Xóa tài khoản</button>
+        </form>
 
         <p class="message" id="message" role="status" aria-live="polite"></p>
       </section>

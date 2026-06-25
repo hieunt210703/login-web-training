@@ -9,8 +9,9 @@ Live demo: https://login-web-training.vercel.app
 - Đăng ký profile với họ và tên, giới tính, ngày sinh, email, mật khẩu và sở thích optional.
 - Đăng nhập thành công sẽ chuyển sang homepage.
 - Homepage hiển thị thông tin profile, avatar chữ cái đầu, email, giới tính, ngày sinh và sở thích.
-- Edit profile trực tiếp trong homepage.
-- Đổi mật khẩu với kiểm tra mật khẩu hiện tại và xác nhận mật khẩu mới.
+- Avatar trên góc phải mở dropdown menu để chọn Homepage, Edit profile, Đổi mật khẩu, Xóa tài khoản hoặc Đăng xuất.
+- Edit profile, đổi mật khẩu và xóa tài khoản được tách thành các form riêng, có nút quay lại homepage.
+- Đổi mật khẩu có kiểm tra mật khẩu hiện tại và xác nhận mật khẩu mới.
 - Xóa tài khoản demo sau khi xác nhận mật khẩu.
 - Validation custom bằng JavaScript, không dùng validation mặc định của trình duyệt.
 - Hiển thị lỗi riêng dưới từng field.
@@ -22,8 +23,8 @@ Live demo: https://login-web-training.vercel.app
 
 ```text
 .
-├── index.html      # Markup cho form đăng nhập, đăng ký và homepage
-├── styles.css      # Giao diện, responsive, field error và toast
+├── index.html      # Markup cho form đăng nhập, đăng ký, homepage và các form quản lý tài khoản
+├── styles.css      # Giao diện, responsive, dropdown, field error và toast
 ├── app.js          # Validation, localStorage auth demo và luồng UI
 ├── vercel.json     # Cấu hình Vercel
 ├── netlify.toml    # Cấu hình Netlify nếu cần
