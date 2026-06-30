@@ -131,7 +131,17 @@ function clearAllForms() {
     editProfileForm,
     changePasswordForm,
     deleteAccountForm,
-  ].forEach(clearFormErrors);
+  ].forEach((form) => {
+    clearFormErrors(form);
+    disableFormButtons(form, false);
+  });
+}
+
+function disableFormButtons(form, isDisabled = true) {
+  form.querySelectorAll("button").forEach((button) => {
+    button.disabled = isDisabled;
+    button.classList.toggle("is-loading", isDisabled && button.type === "submit");
+  });
 }
 
 function showErrors(form, errors) {
@@ -522,11 +532,6 @@ document.querySelectorAll(".password-toggle").forEach((btn) => {
     togglePasswordVisibility(btn.dataset.target);
   });
 });
-
-confirmCancel.addEventListener("click", () => {
-  confirmDialog.close();
-});
-
 profileIcon.addEventListener("click", () => {
   const isOpen = !profileMenu.classList.contains("hidden");
   profileMenu.classList.toggle("hidden", isOpen);
