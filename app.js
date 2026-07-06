@@ -140,7 +140,10 @@ function clearAllForms() {
 function disableFormButtons(form, isDisabled = true) {
   form.querySelectorAll("button").forEach((button) => {
     button.disabled = isDisabled;
-    button.classList.toggle("is-loading", isDisabled && button.type === "submit");
+    button.classList.toggle(
+      "is-loading",
+      isDisabled && button.type === "submit",
+    );
   });
 }
 
@@ -192,8 +195,8 @@ function validateBirthday(birthday) {
   if (new Date(`${birthday}T00:00:00`) > new Date()) {
     return "Ngày sinh không được lớn hơn ngày hiện tại.";
   }
-  if (getAge(birthday) < 13) {
-    return "Bạn cần từ 13 tuổi trở lên để đăng ký.";
+  if (getAge(birthday) < 10) {
+    return "Bạn cần từ 10 tuổi trở lên để đăng ký.";
   }
   return "";
 }
@@ -330,7 +333,7 @@ function togglePasswordVisibility(inputId) {
   const isPassword = input.type === "password";
   input.type = isPassword ? "text" : "password";
   toggleBtn.setAttribute("aria-pressed", String(!isPassword));
-  
+
   const icon = toggleBtn.querySelector(".password-icon");
   if (icon) {
     icon.textContent = isPassword ? "Hide" : "Show";
